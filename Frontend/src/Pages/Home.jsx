@@ -48,43 +48,48 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome to Home</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <header className="flex flex-col sm:flex-row justify-between items-center mb-10">
+        <h1 className="text-4xl font-extrabold text-purple-700 mb-4 sm:mb-0">
+          Welcome to Home
+        </h1>
         <button
           onClick={handleLogout}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition"
+          className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-shadow shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500"
           aria-label="Logout"
         >
           Logout
         </button>
-      </div>
+      </header>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700 border-b border-purple-300 pb-2">
           Products from API
         </h2>
 
-        {loading && <p className="text-gray-500">Loading products...</p>}
+        {loading && (
+          <p className="text-gray-500 italic">Loading products...</p>
+        )}
 
         {error && (
-          <p className="text-red-600 font-semibold mb-4">
-            Error: {error}
-          </p>
+          <p className="text-red-600 font-semibold mb-4">{error}</p>
         )}
 
         {!loading && !error && products.length === 0 && (
-          <p className="text-gray-600">No products available.</p>
+          <p className="text-gray-600 italic">No products available.</p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map(({ name, price }, index) => (
             <div
               key={index}
-              className="border rounded-md p-4 shadow hover:shadow-lg transition bg-white"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow cursor-pointer"
+              role="article"
+              tabIndex={0}
+              aria-label={`Product ${name} priced at Rs ${price}`}
             >
-              <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
-              <p className="text-purple-700 font-bold">Rs {price}</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">{name}</h3>
+              <p className="text-purple-700 font-bold text-lg">Rs {price}</p>
             </div>
           ))}
         </div>

@@ -14,130 +14,127 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  console.log("login info -->", formData);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { name, email, password } = formData;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, password } = formData;
 
-  if (!name || !email || !password) {
-    failedToast("Name, email or password is required");
-    return;
-  }
-
-  if (name.length < 4) {
-    failedToast("Name must be at least 4 characters");
-    return;
-  }
-
-  if (password.length < 4) {
-    failedToast("Password must be at least 4 characters");
-    return;
-  }
-
-  try {
-    const url = "https://auth-backend-api-xq05.onrender.com/auth/signup";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const result = await response.json();
-    const { success, message, error } = result;
-
-    if (success) {
-      successToast("Successfully signed up");
-      setTimeout(() => {
-        navigate("../login");
-      }, 1000);
-      setFormData({ name: "", email: "", password: "" });
-    } else if (error) {
-      const details = error?.details[0]?.message || "Validation error";
-      failedToast(details);
-    } else {
-      failedToast(message || "Signup failed");
+    if (!name || !email || !password) {
+      failedToast("Name, email or password is required");
+      return;
     }
-  } catch (error) {
-    failedToast("Something went wrong. Try again.");
-  }
-};
 
+    if (name.length < 4) {
+      failedToast("Name must be at least 4 characters");
+      return;
+    }
+
+    if (password.length < 4) {
+      failedToast("Password must be at least 4 characters");
+      return;
+    }
+
+    try {
+      const url = "https://auth-backend-api-xq05.onrender.com/auth/signup";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      const { success, message, error } = result;
+
+      if (success) {
+        successToast("Successfully signed up");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+        setFormData({ name: "", email: "", password: "" });
+      } else if (error) {
+        const details = error?.details?.[0]?.message || "Validation error";
+        failedToast(details);
+      } else {
+        failedToast(message || "Signup failed");
+      }
+    } catch (error) {
+      failedToast("Something went wrong. Try again.");
+    }
+  };
 
   return (
-    <div className=" w-[100%] h-[100vh] flex items-center justify-center bg-blue-50">
-      <div
-        className="container bg-[rgb(255,255,255,0.1)] w-[100%] max-w-[370px] px-10 py-20 flex flex-col items-center rounded-xl "
-        style={{
-          boxShadow: "2px 2px 5px 5px rgba(66,66,69,1)",
-        }}
-      >
-        <h1 className=" font-bold text-3xl mb-7 tracking-wide">Sign Up</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col mb-3">
-            <label
-              htmlFor="name"
-              className="text-lg tracking-wider font-semibold "
-            >
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10 max-w-md w-full transition-all duration-500">
+        <h2 className="text-3xl font-extrabold text-center text-purple-700 mb-6">
+          Create Account
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block mb-1 text-gray-700 font-semibold" htmlFor="name">
               Name
             </label>
             <input
-              onChange={handleChange}
-              className="border-b-[2px] border-purple-900 pb-1 focus:outline-none placeholder:text-md  placeholder:text-black placeholder:italic"
-              type="text"
+              id="name"
               name="name"
+              type="text"
               value={formData.name}
-              placeholder="Enter you name"
+              onChange={handleChange}
+              placeholder="Enter your name"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300"
             />
           </div>
-          <div className="flex flex-col mb-3">
-            <label htmlFor="" className="text-lg tracking-wider font-semibold ">
+          <div>
+            <label className="block mb-1 text-gray-700 font-semibold" htmlFor="email">
               Email
             </label>
             <input
-              onChange={handleChange}
-              className="border-b-[2px] border-purple-900 pb-1 focus:outline-none placeholder:text-md  placeholder:text-black placeholder:italic"
+              id="email"
               name="email"
-              value={formData.email}
               type="email"
-              placeholder="Enter you email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300"
             />
           </div>
-          <div className="flex flex-col mb-3">
-            <label htmlFor="" className="text-lg tracking-wider font-semibold ">
+          <div>
+            <label
+              className="block mb-1 text-gray-700 font-semibold"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
-              onChange={handleChange}
-              className="border-b-[2px] border-purple-900 pb-1 focus:outline-none placeholder:text-md  placeholder:text-black placeholder:italic"
+              id="password"
               name="password"
-              value={formData.password}
               type="password"
-              placeholder="Enter you password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300"
             />
           </div>
           <button
             type="submit"
-            className="w-[100%] bg-purple-600 rounded-md p-1 font-[500] my-2 text-white"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-md transition-all duration-300"
           >
             Sign Up
           </button>
-          <span>
-            User already have a account?
-            <Link className="text-purple-700 px-1 underline" to="/login">
-              Login{" "}
-            </Link>
-          </span>
         </form>
-        <ToastContainer />
+        <p className="text-sm text-center mt-4 text-gray-600">
+          Already have an account?{" "}
+          <Link to="/login" className="text-purple-700 font-medium hover:underline">
+            Log In
+          </Link>
+        </p>
+        <ToastContainer position="top-center" autoClose={2000} />
       </div>
     </div>
   );
