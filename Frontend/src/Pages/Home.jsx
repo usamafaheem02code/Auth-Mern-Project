@@ -25,7 +25,7 @@ const Home = () => {
           return;
         }
 
-        const res = await fetch("http://localhost:8000/auth/product", {
+        const res = await fetch("https://auth-backend-api-xq05.onrender.com/auth/product", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
